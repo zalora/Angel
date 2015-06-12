@@ -4,19 +4,20 @@ module Angel.Log ( cleanCalendar
 
 import Data.Time.LocalTime (ZonedTime,
                             getZonedTime)
-import Data.Time.Format (formatTime)
+import Data.Time.Format ( formatTime
+                        , defaultTimeLocale)
 
 import Text.Printf (printf)
-import System.Locale (defaultTimeLocale)
+import Angel.Data
 
 -- |provide a clean, ISO-ish format for timestamps in logs
 cleanCalendar :: ZonedTime -> String
 cleanCalendar = formatTime defaultTimeLocale "%Y/%m/%d %H:%M:%S"
 
--- |log a line to stdout; indented for use with partial application for 
+-- |log a line to stdout; indented for use with partial application for
 -- |"local log"-type macroing
 logger :: String -> String -> IO ()
-logger lname msg = do 
+logger lname msg = do
     zt <- getZonedTime
     printf "[%s] {%s} %s\n" (cleanCalendar zt) lname msg
 
